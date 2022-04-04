@@ -19,14 +19,17 @@ int count(struct node *);
 void add_new(struct node **,char []);
 void delete_first(struct node **);
 void delete_(struct node *,int num);
-
+void search(struct node *head,char toSearch[]);
+void play(struct node *,struct node *head,int position);
+void sort(struct node **head,struct node *temp);
 
 
 int main()
 {
-	char choice,new[30];
+	char choice,new[30],toSearch[30];
 	int position;
 	struct node *start=NULL;
+	struct node *recent=NULL;
 	struct node *ptr;
 	generate(&start);
 	ptr=start;
@@ -48,7 +51,7 @@ int main()
             	ptr=start;
             	display(ptr);
             	printf("Enter:");
-            	scanf(" %d",&position);
+            	scanf("%d",&position);
             	if(position==1)
             	{
             		delete_first(&start);
@@ -75,19 +78,28 @@ int main()
             break;
 
             case 'e':
-//                printf("Enter the song name to search: ");
-//                scanf("%s",toSearch);
-//                search(start,toSearch);
+                printf("Enter the song name to search: ");
+                scanf("%s",toSearch);
+                search(start,toSearch);
             break;
 
             case 'f':
+            	ptr=start;
+            	display(ptr);
+            	printf("Enter: ");
+            	scanf("%d",position);
+            	ptr=start;
+            	play(recent,ptr,position);
             break;
 
             case 'g':
+            	ptr=start;
+            	sort(&start,ptr);
             break;
 
             case 'h':
-//                display(recent);
+            	ptr=recent;
+                display(ptr);
             break;
 
             case 'i':
@@ -147,8 +159,16 @@ void add_new(struct node **head,char newSong[])
 	struct node *new;
 	new=(struct node *)malloc(sizeof(struct node));
 	strcpy(new->song,newSong);
-	new->next=*head;
-	*head=new;
+	if(*head==NULL)
+	{
+		*head=new;
+		(*head)->next=NULL;
+	}
+	else
+	{
+		new->next=*head;
+		*head=new;
+	}
 }
 void delete_first(struct node **head)
 {
@@ -173,4 +193,67 @@ void delete_(struct node *head,int position)
 		}
 	}
 }
+void search(struct node *head,char toSearch[])
+{
+	int i=1;
+	while(head!=NULL)
+	{
+		if(strcmp(head->song,toSearch)==0)
+		{
+			printf("Song Exist at position %d\n",i);
+			break;
+		}
+		else
+		{
+			head=head->next;
+			i++;
+		}
+	}
+}
+void play(struct node *recent,struct node *head,int position)
+{
+	int i=1;
+	while(head!=NULL)
+	{
+		if(position==i)
+		{
+			add_new(&recent,head->song);
+			PlaySound(TEXT(strcat(head->song,".wav")),NULL,SND_ASYNC);
+			Sleep(15000);
+			break;
+		}
+		else
+		{
+			head=head->next;
+			i++;
+		}
+	}
+}
+void sort(struct node **head,struct node *temp)
+{
+	char replacer[30];
+	struct node *ptr;
+	ptr=temp;
+	int c=count(ptr),i;
+	for(i=0;i<c-1;i++)
+	{
+		while(temp!=NULL)
+		{
+			if(strcmp(temp->song,temp->next->song)==1)
+			{
+				strcpy(replacer,temp->song);
+				strcpy(temp->song,temp->next->song);
+				strcpy(temp->next->song,replacer);
+				temp=temp->next;
+			}
+			else
+			{
+				temp=temp->next;
+			}
+		}
+		temp=*head;
+	}
+	
+}
+
 
