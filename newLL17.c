@@ -18,8 +18,8 @@ void display(struct node *);
 int count(struct node *);
 void add_new(struct node **,char []);
 void delete_first(struct node **);
-void delete_middle(struct node *,int num);
-void delete_last(struct node *);
+void delete_(struct node *,int num);
+
 
 
 int main()
@@ -53,15 +53,10 @@ int main()
             	{
             		delete_first(&start);
 				}
-				else if(1<position<count(ptr))
+				else if(1<position<=count(ptr))
 				{
 					ptr=start;
-					delete_middle(ptr,position);
-				}
-				else if(position==count(ptr))
-				{
-					ptr=start;
-					delete_last(ptr);
+					delete_(ptr,position);
 				}
 				else
 				{
@@ -161,7 +156,7 @@ void delete_first(struct node **head)
 	temp=(*head)->next;
 	*head=temp;
 }
-void delete_middle(struct node *head,int position)
+void delete_(struct node *head,int position)
 {
 	int i=1;
 	while(head!=NULL)
@@ -178,7 +173,4 @@ void delete_middle(struct node *head,int position)
 		}
 	}
 }
-void delete_last(struct node *head)
-{
-	
-}
+
