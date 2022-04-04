@@ -5,7 +5,7 @@
 #include<windows.h>
 #include<MMsystem.h>
 
-char songs[5][20]={"song1","song2","song3"};
+char songs[5][30]={"song1","song2","song3"};
 
 struct node
 {
@@ -253,7 +253,6 @@ void sort(struct node **head,struct node *temp)
 		}
 		temp=*head;
 	}
-	
 }
 
 
